@@ -21,3 +21,17 @@
      - 링크 id : `a #thumbnail의 href`
      - 시간 : `#details -> # metadata-line -> span 2번째`
    - CORS 이슈 : https://evan-moon.github.io/2020/05/21/about-cors/
+
+## 제한
+
+- https://ny0011.github.io/myhome/ 에서 오는 요청만 받기 가능할까?
+
+## 배포
+
+- heroku
+  - https://velog.io/@apjammanbo/Backend-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0
+
+## study
+
+- Controller = router. url을 받고 함수를 리턴
+- service = 함수가 정의된 곳
