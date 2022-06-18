@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Youtube } from './entities/youtube.entity';
-import { chromium } from '@playwright/test';
+import { chromium } from 'playwright-chromium';
 
 @Injectable()
 export class YoutubeService {
@@ -21,7 +21,7 @@ export class YoutubeService {
     const YOUTUBE_URL = `https://www.youtube.com/channel/${uid}`;
     const UPDATED_VIDEO_URL = YOUTUBE_URL + '/videos?view=0&sort=dd&shelf_id=0';
 
-    const browser = await chromium.launch();
+    const browser = await chromium.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(YOUTUBE_URL);
     const youtuber = await page.$$eval(
