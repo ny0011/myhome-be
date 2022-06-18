@@ -3,6 +3,8 @@
 ## 기능
 
 1. 북마크 중 유튜브 채널 링크일 때의 데이터 수집 및 전달
+   - 스크랩 허용 범위 : https://www.youtube.com/robots.txt
+     - /channel/\*/community 만 제한됨
    - youtube 링크 데이터 get : fetch
    - html 분석 : node-html-parser
    - 채널 대표 이미지 삽입
