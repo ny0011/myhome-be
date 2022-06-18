@@ -12,7 +12,6 @@ export class YoutubeService {
       return data;
     } else {
       const tmp = await this.getYoutuber(uid).then((response) => response);
-      console.log(tmp);
       return { uid: uid, id: 1, data: tmp };
     }
   }
@@ -31,13 +30,11 @@ export class YoutubeService {
         const data = [];
         all_items.forEach((info) => {
           const img = info.querySelector('img').getAttribute('src');
-          console.log(img);
           data.push({ img: img });
         });
         return data;
       },
     );
-    console.log(youtuber);
     await page.waitForTimeout(1000);
     await browser.close();
     return youtuber;
