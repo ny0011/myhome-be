@@ -1,5 +1,5 @@
 export class Youtube {
   uid: string;
   id: number;
-  data: any[];
+  data: JSON;
 }

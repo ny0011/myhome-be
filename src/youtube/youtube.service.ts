@@ -17,27 +17,47 @@ export class YoutubeService {
   }
 
   async getYoutuber(uid: string) {
-    const YOUTUBE_URL = `https://www.youtube.com/channel/${uid}`;
-    const UPDATED_VIDEO_URL = YOUTUBE_URL + '/videos?view=0&sort=dd&shelf_id=0';
+    const YOUTUBE_CHANNEL_URL = `https://www.youtube.com/channel/${uid}`;
+    const UPDATED_VIDEO_URL =
+      YOUTUBE_CHANNEL_URL + '/videos?view=0&sort=dd&shelf_id=0';
 
-    const browser = await chromium.launch({ args: ['--no-sandbox'] });
+    const browser = await chromium.launch({
+      args: ['--no-sandbox'],
+    });
     const page = await browser.newPage();
-    await page.goto(YOUTUBE_URL);
+    await page.goto(YOUTUBE_CHANNEL_URL);
     const youtuber = await page.$$eval(
       '#channel-header-container',
       (all_items) => {
-        console.log(all_items);
-        const data = [];
-        all_items.forEach((info) => {
-          const img = info.querySelector('img').getAttribute('src');
-          data.push({ img: img });
-        });
-        return data;
+        const img = all_items[0].querySelector('img').getAttribute('src');
+        return { img: img };
       },
     );
+    await page.goto(UPDATED_VIDEO_URL);
+    const elements = page.locator('#items #dismissible >> nth=0');
+    const new_video_data = await elements.evaluate((item) => {
+      const thumbnail_tag = item.querySelector('a#thumbnail');
+      const link = thumbnail_tag.getAttribute('href');
+      const img = thumbnail_tag.querySelector('#img').getAttribute('src');
+      const title = item.querySelector('#details h3 a').innerHTML;
+      /*const time = item.querySelector(
+        '#details #metadata-line span:nth-child(2)',
+      );*/
+      const YOUTUBE_URL = 'https://www.youtube.com';
+      return {
+        new_video_link: `${YOUTUBE_URL}${link}`,
+        thumbnail: img,
+        title: title,
+      };
+    });
+
     await page.waitForTimeout(1000);
     await browser.close();
-    return youtuber;
+
+    return {
+      youtuber: youtuber,
+      new_video: new_video_data,
+    };
   }
 
   create(youtuberData) {
